@@ -1,121 +1,241 @@
-# 🎫 IT Ticket Classifier
+# IT Ticket Classifier & Translator
 
-AI-powered IT helpdesk ticket triage using local LLMs via Ollama. Classifies tickets by category, priority, and responsible team — no cloud APIs, no data leaving your network.
+AI-powered IT helpdesk ticket triage and translation using local LLMs via Ollama.
 
-![Python](https://img.shields.io/badge/Python-3.10+-blue?style=flat-square)
-![FastAPI](https://img.shields.io/badge/FastAPI-0.115-green?style=flat-square)
-![Ollama](https://img.shields.io/badge/Ollama-local-orange?style=flat-square)
-![License](https://img.shields.io/badge/License-MIT-gray?style=flat-square)
+It bridges the gap between non-technical user descriptions and professional IT diagnostics — no cloud APIs, no data leaving your network.
+
+Clasificación y traducción de tickets de soporte TI mediante modelos LLM ejecutados localmente con Ollama. Actúa como puente entre descripciones no técnicas de usuarios y diagnósticos profesionales de TI, sin APIs externas y sin que los datos salgan de tu red.
+
+---
+
+## Language / Idioma
+
+* English
+* Español
+
+---
+
+# English
 
 ## What it does
 
-Paste any IT support ticket and get instant structured classification:
+Paste any chaotic or non-technical IT support ticket and get an instant structured technical classification:
 
-- **Category** — Hardware, Software, Network, Security, Access/IAM, Email, Database, Infrastructure
-- **Priority** — Critical / High / Medium / Low
-- **Team** — Which team should handle it
-- **Summary** — One-sentence ticket summary
-- **Confidence** — How certain the model is
-- **Reasoning** — Why it classified it this way
+* Category — Hardware, Software, Network, Security, Access/IAM, Email, Database, Infrastructure.
+* Priority — Critical, High, Medium or Low (calculated based on impact).
+* Team — Recommended support team.
+* Summary (The Translator) — Converts non-technical user descriptions into a concise professional IT diagnostic.
+* Confidence — Model certainty score.
+* Reasoning — Step-by-step explanation behind the classification.
 
-## Why this matters
+## Technology Stack
 
-Manual ticket triage is slow and inconsistent. This tool lets a helpdesk automatically pre-classify incoming tickets before a human reviews them, reducing triage time and routing errors — all running locally, so sensitive IT data stays on-premise.
-
-## Stack
-
-| Layer | Tech |
-|---|---|
-| Backend | FastAPI + Python |
-| AI inference | Ollama (local) |
-| Models | Qwen2.5, DeepSeek, or any Ollama model |
-| Frontend | Vanilla HTML/CSS/JS |
+* Backend: FastAPI + Python
+* AI Inference: Ollama (local)
+* Models: Qwen2.5, DeepSeek-R1 or any Ollama-compatible model
+* Frontend: Vanilla HTML, CSS and JavaScript
 
 ## Requirements
 
-- Python 3.10+
-- [Ollama](https://ollama.com) running locally
-- At least one model pulled (e.g. `qwen2.5:latest`)
+* Python 3.10+
+* Ollama running locally
+* At least one downloaded model
 
-## Setup
+Example:
 
 ```bash
-# 1. Clone the repo
-git clone https://github.com/YOUR_USERNAME/ticket-classifier
-cd ticket-classifier
-
-# 2. Install dependencies
-pip install -r requirements.txt
-
-# 3. Make sure Ollama is running and pull a model
 ollama pull qwen2.5
-
-# 4. Start the server
-uvicorn main:app --reload --port 8000
-
-# 5. Open in browser
-open http://localhost:8000
 ```
 
-## API
+## Installation
 
-The classifier exposes a simple REST API you can integrate anywhere:
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/YOUR_USERNAME/ticket-classifier.git
+cd ticket-classifier
+```
+
+### 2. Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 3. Download a model
+
+```bash
+ollama pull qwen2.5
+```
+
+### 4. Start the application
+
+```bash
+uvicorn main:app --reload --port 8000
+```
+
+### 5. Open the web interface
+
+```text
+http://localhost:8000
+```
+
+## API Endpoints
+
+| Method | Path      | Description                     |
+| ------ | --------- | ------------------------------- |
+| GET    | /         | Web interface                   |
+| POST   | /classify | Classify and translate a ticket |
+| GET    | /models   | List available Ollama models    |
+| GET    | /health   | Health check                    |
+
+## Example Request
 
 ```bash
 curl -X POST http://localhost:8000/classify \
   -H "Content-Type: application/json" \
-  -d '{"text": "User cannot login to VPN since this morning, affects 20 people"}'
+  -d '{
+        "text":"The internet globe icon on my taskbar has a red cross and the floor box is flashing red"
+      }'
 ```
 
-Response:
+## Example Response
+
 ```json
 {
   "category": "Network",
   "priority": "High",
   "team": "Network Team",
-  "summary": "VPN access failure affecting 20 users since this morning",
+  "summary": "Local WAN link failure / Router hardware alert status (Red LED flashing)",
   "confidence": "High",
-  "reasoning": "VPN is a network service; 20 affected users with no access raises priority to High"
+  "reasoning": "User describes a red cross on the network icon and flashing red LEDs on the router, indicating a physical or link-layer connectivity issue."
 }
 ```
 
-### Endpoints
+---
 
-| Method | Path | Description |
-|---|---|---|
-| `GET` | `/` | Web interface |
-| `POST` | `/classify` | Classify a ticket |
-| `GET` | `/models` | List available Ollama models |
-| `GET` | `/health` | Health check |
+# Español
 
-## Switching models
+## ¿Qué hace?
 
-The web UI shows all models you have installed in Ollama. You can also specify the model in the API:
+Pega cualquier incidencia descrita por un usuario sin conocimientos técnicos y obtén una clasificación profesional y estructurada al instante:
+
+* Categoría — Hardware, Software, Redes, Seguridad, Accesos/IAM, Correo, Base de Datos, Infraestructura.
+* Prioridad — Crítica, Alta, Media o Baja.
+* Equipo — Equipo técnico recomendado.
+* Resumen (El Traductor) — Convierte explicaciones vagas en un diagnóstico profesional de TI.
+* Confianza — Nivel de certeza del modelo.
+* Razonamiento — Explicación paso a paso de la clasificación.
+
+## Stack Tecnológico
+
+* Backend: FastAPI + Python
+* Inferencia IA: Ollama (local)
+* Modelos: Qwen2.5, DeepSeek-R1 o cualquier modelo compatible con Ollama
+* Frontend: HTML, CSS y JavaScript nativo
+
+## Requisitos
+
+* Python 3.10+
+* Ollama ejecutándose localmente
+* Al menos un modelo descargado
+
+Ejemplo:
+
+```bash
+ollama pull qwen2.5
+```
+
+## Instalación
+
+### 1. Clonar el repositorio
+
+```bash
+git clone https://github.com/TU_USUARIO/ticket-classifier.git
+cd ticket-classifier
+```
+
+### 2. Instalar dependencias
+
+```bash
+pip install -r requirements.txt
+```
+
+### 3. Descargar un modelo
+
+```bash
+ollama pull qwen2.5
+```
+
+### 4. Iniciar la aplicación
+
+```bash
+uvicorn main:app --reload --port 8000
+```
+
+### 5. Abrir la interfaz web
+
+```text
+http://localhost:8000
+```
+
+## Endpoints de la API
+
+| Método | Ruta      | Descripción                   |
+| ------ | --------- | ----------------------------- |
+| GET    | /         | Interfaz web                  |
+| POST   | /classify | Clasificar y traducir ticket  |
+| GET    | /models   | Modelos disponibles en Ollama |
+| GET    | /health   | Estado del servicio           |
+
+## Ejemplo de Petición
+
+```bash
+curl -X POST http://localhost:8000/classify \
+  -H "Content-Type: application/json" \
+  -d '{
+        "text":"El icono de Internet tiene una cruz roja y el router tiene luces rojas parpadeando"
+      }'
+```
+
+## Ejemplo de Respuesta
 
 ```json
-{ "text": "...", "model": "deepseek-r1:7b" }
+{
+  "category": "Network",
+  "priority": "High",
+  "team": "Network Team",
+  "summary": "Pérdida de conectividad WAN / Fallo de enlace en router local",
+  "confidence": "High",
+  "reasoning": "El usuario describe pérdida de conectividad junto con alertas físicas en el router, lo que apunta a un problema de red o hardware."
+}
 ```
 
-## Project structure
+---
 
-```
+# Project Structure / Estructura del Proyecto
+
+```text
 ticket-classifier/
-├── main.py              # FastAPI backend
+├── main.py
 ├── requirements.txt
 ├── static/
-│   └── index.html       # Web interface
+│   └── index.html
 └── README.md
 ```
 
-## Ideas to extend this project
+## Future Roadmap / Próximas Mejoras
 
-- [ ] Batch classification via CSV upload
-- [ ] Export results to CSV / JSON
-- [ ] Webhook integration (ServiceNow, Jira, etc.)
-- [ ] Confidence threshold alerts
-- [ ] Classification history with SQLite
-- [ ] Slack / Teams bot integration
+* [ ] Batch classification via CSV upload.
+* [ ] Export results to CSV or JSON.
+* [ ] Jira and ServiceNow integration.
+* [ ] Local ticket history using SQLite.
+* [ ] Slack and Microsoft Teams integration.
+* [ ] Multi-language classification support.
+* [ ] Confidence score visualization.
+* [ ] Support for custom classification categories.
 
-## License
+## License / Licencia
 
 MIT
+
