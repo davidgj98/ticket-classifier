@@ -52,7 +52,7 @@ ollama pull qwen2.5
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/ticket-classifier.git
+git clone https://github.com/davidgj98/ticket-classifier.git
 cd ticket-classifier
 ```
 
@@ -151,7 +151,7 @@ ollama pull qwen2.5
 ### 1. Clonar el repositorio
 
 ```bash
-git clone https://github.com/TU_USUARIO/ticket-classifier.git
+git clone https://github.com/davidgj98/ticket-classifier.git
 cd ticket-classifier
 ```
 
