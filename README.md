@@ -224,17 +224,6 @@ ticket-classifier/
 └── README.md
 ```
 
-## Future Roadmap / Próximas Mejoras
-
-* [ ] Batch classification via CSV upload.
-* [ ] Export results to CSV or JSON.
-* [ ] Jira and ServiceNow integration.
-* [ ] Local ticket history using SQLite.
-* [ ] Slack and Microsoft Teams integration.
-* [ ] Multi-language classification support.
-* [ ] Confidence score visualization.
-* [ ] Support for custom classification categories.
-
 ## License / Licencia
 
 MIT
