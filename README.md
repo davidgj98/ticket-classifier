@@ -1,230 +1,130 @@
 # IT Ticket Classifier & Translator
 
-AI-powered IT helpdesk ticket triage and translation using local LLMs via Ollama.
+AI-powered IT helpdesk ticket triage using local LLMs via Ollama.
+Clasificación y traducción de tickets de soporte TI mediante LLMs locales.
 
-It bridges the gap between non-technical user descriptions and professional IT diagnostics — no cloud APIs, no data leaving your network.
-
-Clasificación y traducción de tickets de soporte TI mediante modelos LLM ejecutados localmente con Ollama. Actúa como puente entre descripciones no técnicas de usuarios y diagnósticos profesionales de TI, sin APIs externas y sin que los datos salgan de tu red.
-
----
-
-## Language / Idioma
-
-* English
-* Español
+[![CI](https://github.com/davidgj98/ticket-classifier/actions/workflows/ci.yml/badge.svg)](https://github.com/davidgj98/ticket-classifier/actions/workflows/ci.yml)
 
 ---
-
-# English
 
 ## What it does
 
 Paste any chaotic or non-technical IT support ticket and get an instant structured technical classification:
 
-* Category — Hardware, Software, Network, Security, Access/IAM, Email, Database, Infrastructure.
-* Priority — Critical, High, Medium or Low (calculated based on impact).
-* Team — Recommended support team.
-* Summary (The Translator) — Converts non-technical user descriptions into a concise professional IT diagnostic.
-* Confidence — Model certainty score.
-* Reasoning — Step-by-step explanation behind the classification.
+| Field | Description |
+|---|---|
+| **Category** | Hardware, Software, Network, Security, Access/IAM, Email, Database, Infrastructure |
+| **Priority** | Critical, High, Medium, Low (calculated based on impact) |
+| **Team** | Recommended support team |
+| **Summary** | Converts non-technical descriptions into professional IT diagnostics |
+| **Confidence** | Model certainty score |
+| **Reasoning** | Step-by-step explanation behind the classification |
 
-## Technology Stack
+## Tech Stack
 
-* Backend: FastAPI + Python
-* AI Inference: Ollama (local)
-* Models: Qwen2.5, DeepSeek-R1 or any Ollama-compatible model
-* Frontend: Vanilla HTML, CSS and JavaScript
+| Layer | Technology |
+|---|---|
+| Backend | FastAPI + Python 3.10+ |
+| AI Inference | Ollama (local, no cloud APIs) |
+| Frontend | Vanilla HTML/CSS/JS with cyberpunk-neon aesthetic |
+| Database | SQLite (classification history) |
+| Dev tools | Ruff (lint), mypy (types), pytest (tests) |
+| Deployment | Docker + docker-compose |
 
-## Requirements
-
-* Python 3.10+
-* Ollama running locally
-* At least one downloaded model
-
-Example:
-
-```bash
-ollama pull qwen2.5
-```
-
-## Installation
-
-### 1. Clone the repository
+## Quick Start
 
 ```bash
+# 1. Clone
 git clone https://github.com/davidgj98/ticket-classifier.git
 cd ticket-classifier
-```
 
-### 2. Install dependencies
-
-```bash
+# 2. Install
 pip install -r requirements.txt
-```
 
-### 3. Download a model
-
-```bash
+# 3. Pull a model
 ollama pull qwen2.5
+
+# 4. Run
+uvicorn app.main:app --reload --port 8000
+
+# 5. Open
+open http://localhost:8000
 ```
 
-### 4. Start the application
+## Docker
 
 ```bash
-uvicorn main:app --reload --port 8000
+docker compose up --build
 ```
 
-### 5. Open the web interface
+Starts both Ollama and the classifier. The app will be at `http://localhost:8000`.
 
-```text
-http://localhost:8000
+## API
+
+| Method | Path | Description |
+|---|---|---|
+| GET | `/` | Web interface |
+| POST | `/classify` | Classify a ticket |
+| GET | `/models` | List available Ollama models |
+| GET | `/health` | Health check |
+| GET | `/history` | Classification history |
+| GET | `/history/{id}` | Get specific classification |
+| DELETE | `/history/{id}` | Delete a classification |
+| GET | `/export/csv` | Export history as CSV |
+| GET | `/export/json` | Export history as JSON |
+
+## Project Structure
+
 ```
-
-## API Endpoints
-
-| Method | Path      | Description                     |
-| ------ | --------- | ------------------------------- |
-| GET    | /         | Web interface                   |
-| POST   | /classify | Classify and translate a ticket |
-| GET    | /models   | List available Ollama models    |
-| GET    | /health   | Health check                    |
-
-## Example Request
-
-```bash
-curl -X POST http://localhost:8000/classify \
-  -H "Content-Type: application/json" \
-  -d '{
-        "text":"The internet globe icon on my taskbar has a red cross and the floor box is flashing red"
-      }'
-```
-
-## Example Response
-
-```json
-{
-  "category": "Network",
-  "priority": "High",
-  "team": "Network Team",
-  "summary": "Local WAN link failure / Router hardware alert status (Red LED flashing)",
-  "confidence": "High",
-  "reasoning": "User describes a red cross on the network icon and flashing red LEDs on the router, indicating a physical or link-layer connectivity issue."
-}
-```
-
----
-
-# Español
-
-## ¿Qué hace?
-
-Pega cualquier incidencia descrita por un usuario sin conocimientos técnicos y obtén una clasificación profesional y estructurada al instante:
-
-* Categoría — Hardware, Software, Redes, Seguridad, Accesos/IAM, Correo, Base de Datos, Infraestructura.
-* Prioridad — Crítica, Alta, Media o Baja.
-* Equipo — Equipo técnico recomendado.
-* Resumen (El Traductor) — Convierte explicaciones vagas en un diagnóstico profesional de TI.
-* Confianza — Nivel de certeza del modelo.
-* Razonamiento — Explicación paso a paso de la clasificación.
-
-## Stack Tecnológico
-
-* Backend: FastAPI + Python
-* Inferencia IA: Ollama (local)
-* Modelos: Qwen2.5, DeepSeek-R1 o cualquier modelo compatible con Ollama
-* Frontend: HTML, CSS y JavaScript nativo
-
-## Requisitos
-
-* Python 3.10+
-* Ollama ejecutándose localmente
-* Al menos un modelo descargado
-
-Ejemplo:
-
-```bash
-ollama pull qwen2.5
-```
-
-## Instalación
-
-### 1. Clonar el repositorio
-
-```bash
-git clone https://github.com/davidgj98/ticket-classifier.git
-cd ticket-classifier
-```
-
-### 2. Instalar dependencias
-
-```bash
-pip install -r requirements.txt
-```
-
-### 3. Descargar un modelo
-
-```bash
-ollama pull qwen2.5
-```
-
-### 4. Iniciar la aplicación
-
-```bash
-uvicorn main:app --reload --port 8000
-```
-
-### 5. Abrir la interfaz web
-
-```text
-http://localhost:8000
-```
-
-## Endpoints de la API
-
-| Método | Ruta      | Descripción                   |
-| ------ | --------- | ----------------------------- |
-| GET    | /         | Interfaz web                  |
-| POST   | /classify | Clasificar y traducir ticket  |
-| GET    | /models   | Modelos disponibles en Ollama |
-| GET    | /health   | Estado del servicio           |
-
-## Ejemplo de Petición
-
-```bash
-curl -X POST http://localhost:8000/classify \
-  -H "Content-Type: application/json" \
-  -d '{
-        "text":"El icono de Internet tiene una cruz roja y el router tiene luces rojas parpadeando"
-      }'
-```
-
-## Ejemplo de Respuesta
-
-```json
-{
-  "category": "Network",
-  "priority": "High",
-  "team": "Network Team",
-  "summary": "Pérdida de conectividad WAN / Fallo de enlace en router local",
-  "confidence": "High",
-  "reasoning": "El usuario describe pérdida de conectividad junto con alertas físicas en el router, lo que apunta a un problema de red o hardware."
-}
-```
-
----
-
-# Project Structure / Estructura del Proyecto
-
-```text
 ticket-classifier/
-├── main.py
+├── app/
+│   ├── main.py              # FastAPI app entry point
+│   ├── config.py            # Pydantic Settings (env vars)
+│   ├── models.py            # Pydantic request/response models
+│   ├── routers/
+│   │   ├── classify.py      # POST /classify
+│   │   ├── health.py        # GET /health
+│   │   ├── history.py       # CRUD /history
+│   │   ├── models_router.py # GET /models
+│   │   └── export.py        # GET /export/{csv,json}
+│   ├── services/
+│   │   ├── ollama.py        # Ollama API client
+│   │   └── history.py       # SQLite history service
+│   └── static/
+│       └── index.html       # Cyberpunk-neon themed UI
+├── tests/
+│   ├── conftest.py          # Mocked Ollama + test client
+│   ├── test_classify.py
+│   ├── test_health.py
+│   ├── test_models.py
+│   ├── test_history.py
+│   └── test_export.py
+├── main.py                  # Backwards-compatible entry point
+├── Dockerfile
+├── docker-compose.yml
+├── pyproject.toml            # Ruff, mypy, pytest config
 ├── requirements.txt
-├── static/
-│   └── index.html
-└── README.md
+└── .github/workflows/ci.yml # CI pipeline
 ```
 
-## License / Licencia
+## CI/CD
+
+Every push runs:
+1. **Ruff** — lint & format check
+2. **mypy** — strict type checking
+3. **pytest** — 12 tests across all endpoints (with mocked Ollama)
+
+## Configuration
+
+All configurable via environment variables (prefix `TICKET_`):
+
+| Variable | Default | Description |
+|---|---|---|
+| `TICKET_OLLAMA_URL` | `http://localhost:11434` | Ollama base URL |
+| `TICKET_DEFAULT_MODEL` | `qwen2.5:latest` | Fallback model |
+| `TICKET_LOG_LEVEL` | `INFO` | Logging level |
+| `TICKET_REQUEST_TIMEOUT` | `60.0` | Ollama request timeout |
+
+## License
 
 MIT
-

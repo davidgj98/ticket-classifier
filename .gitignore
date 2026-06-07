@@ -6,3 +6,9 @@ venv/
 *.egg-info/
 dist/
 .DS_Store
+data/
+*.db
+*.db-wal
+*.db-shm
+.mypy_cache/
+.ruff_cache/
